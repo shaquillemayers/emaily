@@ -9,8 +9,9 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((userId, done) => {
-  User.findById(userId).then((user) => done(null, user));
+passport.deserializeUser(async (userId, done) => {
+  const user = await User.findById(userId);
+  done(null, user);
 });
 
 passport.use(
@@ -21,17 +22,17 @@ passport.use(
       callbackURL: "/auth/google/callback",
       proxy: true,
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       console.log("profile", profile.id);
 
-      User.findOne({ googleId: profile.id }).then((existingUser) => {
-        if (existingUser) {
-          console.log("Existing User:", existingUser);
-          done(null, existingUser);
-        } else {
-          new User({ googleId: profile.id }).save().then((newUser) => done(null, newUser));
-        }
-      });
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        console.log("Existing User:", existingUser);
+        return done(null, existingUser);
+      }
+      const newUser = await new User({ googleId: profile.id }).save();
+      done(null, newUser);
     }
   )
 );
