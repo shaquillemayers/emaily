@@ -15,14 +15,13 @@ module.exports = (app) => {
     passport.authenticate("google", { failureRedirect: "/login" }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.redirect("/");
+      res.redirect("/surveys");
     }
   );
 
   app.get("/api/logout", (req, res) => {
-    console.log("Logged out!");
     req.logout();
-    res.send(req.user);
+    res.redirect("/");
   });
 
   app.get("/api/current-user", (req, res) => {
