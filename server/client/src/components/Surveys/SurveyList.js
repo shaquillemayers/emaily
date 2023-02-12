@@ -29,7 +29,12 @@ class SurveyList extends Component {
   }
 
   render() {
-    return <div>{this.renderSurveys()}</div>;
+    return (
+      <div>
+        <h1>Survey List</h1>
+        {this.renderSurveys()}
+      </div>
+    );
   }
 }
 

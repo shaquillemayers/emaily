@@ -28,6 +28,8 @@ module.exports = (app) => {
       .map(({ url, email }) => {
         const match = p.test(new URL(url).pathname);
 
+        console.log(match);
+
         if (match) {
           return { email, surveyId: match.surveyId, choice: match.choice };
         }
@@ -66,7 +68,6 @@ module.exports = (app) => {
       dateSent: Date.now(),
     });
 
-    // Great place to send an email!
     const mailer = new Mailer(survey, surveyTemplate(survey));
     try {
       await mailer.send();
