@@ -1,7 +1,7 @@
 const passport = require("passport");
 
 module.exports = (app) => {
-  app.get("/", (req, res) => res.send("HOME"));
+  // app.get("/", (req, res) => res.send("HOME"));
 
   app.get(
     "/auth/google",
